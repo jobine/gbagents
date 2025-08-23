@@ -38,6 +38,7 @@ if __name__ == "__main__":
                 fn=handle_conversation,
                 chatbot=normal_chatbot,
                 submit_btn='发送',
+                type='messages'
             )
 
         with gr.Tab('场景对话'):
@@ -60,12 +61,15 @@ if __name__ == "__main__":
                 # inputs=[gr.Textbox(label='输入内容'), scenario_selector],
                 additional_inputs=scenario_selector,
                 submit_btn='发送',
+                type='messages'
             )
 
     # Launch the Gradio app
     lang_mentor_app.launch(
         share=False,
         server_name='127.0.0.1',
+        # share=True,
+        # server_name='0.0.0.0',
         server_port=7860
     )
 
