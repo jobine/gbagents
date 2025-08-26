@@ -1,40 +1,28 @@
-import re
+import os
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_ollama import ChatOllama
-from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
+# from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from utils.session_history import get_session_history
 from utils.logger import LOG
+from utils.string_utils import clean_thinking
 
 # Message history store
-store = {}
+# store = {}
 
-def get_session_history(session_id: str) -> BaseChatMessageHistory:
-    if session_id not in store:
-        store[session_id] = InMemoryChatMessageHistory()
-    return store[session_id]
-
-def clean_thinking(text):
-    patterns = [
-        r'<think>.*?</think>', # 移除<think>标签内容
-    ]
-
-    cleaned_text = text
-
-    for pattern in patterns:
-        cleaned_text = re.sub(pattern, '', cleaned_text, flags=re.DOTALL | re.MULTILINE)
-
-    # cleaned_text = re.sub(r'\n{3, }', '\n\n', cleaned_text)
-    cleaned_text = cleaned_text.strip()
-    
-    return cleaned_text
+# def get_session_history(session_id: str) -> BaseChatMessageHistory:
+#     if session_id not in store:
+#         store[session_id] = InMemoryChatMessageHistory()
+#     return store[session_id]
 
 class ConversationAgent:
     def __init__(self):
         self.name = 'Conversation Agent'
 
         # Load system prompt
-        with open('prompts/conversation_prompt.txt', 'r', encoding='utf-8') as file:
+        prompt_filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.path.pardir, os.path.pardir, 'prompts', 'conversation_prompt.txt')
+        with open(prompt_filepath, 'r', encoding='utf-8') as file:
             self.system_prompt = file.read().strip()
 
         self.prompt = ChatPromptTemplate.from_messages([
