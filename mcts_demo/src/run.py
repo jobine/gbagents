@@ -5,8 +5,7 @@ from ttt_state import TTTState
 
 def play_game(mcts_iters: int=1000, seed: int=0, opponent: str='random') -> int:
     random.seed(seed)
-    # state: GameState = TTTState()
-    state = TTTState(board=(0, 0, 0, 0, 0, 0, 0, 0, 0), current_player_index=1)
+    state: GameState = TTTState(board=(0, 0, 0, 0, 0, 0, 0, 0, 0), current_player_index=1)
     mcts = MCTS()
     move_num = 1
 
@@ -40,7 +39,7 @@ def play_game(mcts_iters: int=1000, seed: int=0, opponent: str='random') -> int:
 
 if __name__ == '__main__':
     print('\n=== Demo: MCTS (X) vs Random (O) ===\n')
-    _ = play_game(mcts_iters=800, seed=42, opponent='random')
+    _ = play_game(mcts_iters=10, seed=42, opponent='random')
 
-    print('\n=== Demo: MCTS (X) vs MCTS (O) ===\n')
-    _ = play_game(mcts_iters=800, seed=42, opponent='mcts')
+    # print('\n=== Demo: MCTS (X) vs MCTS (O) ===\n')
+    # _ = play_game(mcts_iters=800, seed=42, opponent='mcts')

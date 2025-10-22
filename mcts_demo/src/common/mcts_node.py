@@ -52,3 +52,6 @@ class MCTSNode:
             node.W += value
             value = -value  # Switch perspective for zero-sum game
             node = node.parent
+
+    def __str__(self) -> str:
+        return (f'Action: {self.action_from_parent}, N: {self.N}, W: {self.W:.2f}, Terminated: {self.state.is_terminal()}, Winner: {self.state._check_winner()}')

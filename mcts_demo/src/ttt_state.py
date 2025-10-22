@@ -2,8 +2,8 @@
 # Tic-Tac-Toe State
 # ------------------
 
+from __future__ import annotations
 from dataclasses import dataclass
-
 from common.game_state import GameState
 
 
@@ -18,18 +18,14 @@ class TTTState(GameState):
     def legal_actions(self) -> list[int]:
         return [i for i, v in enumerate(self.board) if v == 0]
 
-    def next_state(self, action: int) -> 'TTTState':
+    def next_state(self, action: int) -> TTTState:
+        if self.board[action] != 0:
+            raise ValueError("Invalid action")
+        
         new_board = list(self.board)
         new_board[action] = self.current_player_index
     
         return TTTState(board=tuple(new_board), current_player_index=-self.current_player_index)
-    
-        # if self.board[action] != 0:
-        #     raise ValueError("Invalid action")
-
-        # new_board = list(self.board)
-        # new_board[action] = 1 if self.current_player_index == 1 else -1
-        # return TTTState(board=tuple(new_board), current_player_index=-self.current_player_index)
 
     def is_terminal(self) -> bool:
         return self._check_winner() is not None or all(v != 0 for v in self.board)
@@ -49,8 +45,6 @@ class TTTState(GameState):
             (0, 4, 8), (2, 4, 6)              # diagonals
         ]
         for a, b, c in lines:
-            # if self.board[a] == self.board[b] == self.board[c] != 0:
-            #     return self.board[a]
             s = self.board[a] + self.board[b] + self.board[c]
             if s == 3:
                 return 1
@@ -59,6 +53,7 @@ class TTTState(GameState):
         return None
     
     def __str__(self) -> str:
-        symbols = {1:"X", -1:"O", 0:" "}
-        rows = ["|".join(symbols[self.board[i * 3 + j]] for j in range(3)) for i in range(3)]
-        return "\n-+-+-\n".join(rows)
+        symbols = {1: 'X', -1: 'O', 0: ' '}
+        rows = ['|'.join(symbols[self.board[i * 3 + j]] for j in range(3)) for i in range(3)]
+
+        return '\n-+-+-\n'.join(rows)
