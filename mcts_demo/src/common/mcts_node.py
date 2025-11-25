@@ -21,7 +21,9 @@ class MCTSNode:
         return len(self.untried_actions) == 0
     
     def best_child(self, c: float=1.4) -> MCTSNode:
-        # UTC score = Q/N + c * sqrt(ln(N_parent) / N)
+        # UCT score = Q/N + c * sqrt(ln(N_parent) / N)
+        #              ^        ^
+        #         exploration  exploitation
         assert self.children, "No children to select from"
 
         ln_parent_N = math.log(self.N)
